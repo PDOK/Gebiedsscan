@@ -46,13 +46,13 @@
           </div>
           </div>
            <ul v-else-if="item.label === 'Bestemmingsplangebied'" class="uk-margin-top">
-            <li style="font-size:13px;line-height: 1.8em;" class="uk-list" v-if="bpg.title === 'verwijzingnaarteksturl' || 
-              bpg.title === 'naam' || 
-              bpg.title === 'plangebied' || 
-              bpg.title === 'planstatus' || 
-              bpg.title === 'dossierstatus' || 
-              bpg.title === 'typeplan' || 
-              bpg.title === 'naamoverheid'" 
+            <li style="font-size:13px;line-height: 1.8em;" class="uk-list" v-if="bpg.title === 'verwijzingnaarteksturl' ||
+              bpg.title === 'naam' ||
+              bpg.title === 'plangebied' ||
+              bpg.title === 'planstatus' ||
+              bpg.title === 'dossierstatus' ||
+              bpg.title === 'typeplan' ||
+              bpg.title === 'naamoverheid'"
               v-for="bpg in formattedItem" :key="bpg.id">
               <strong class="uk-text-capitalize">{{bpg.title}}: </strong>
               <span v-if="bpg.type === 'text'" >{{bpg.value}}</span>
@@ -60,9 +60,24 @@
             </li>
           </ul>
           <ul v-else class="uk-margin-top">
-            <li class="uk-list" style="font-size:13px;line-height: 1.8em;" v-for="item in formattedItem" :key="item.id"><b>{{item.label}}:</b> {{item.value}}</li>
+            <li class="uk-list" style="font-size:13px;line-height: 1.8em;"
+              v-for="item in formattedItem"
+              :key="item.id">
+              <b>{{item.label}}:</b>
+              <template v-if="Array.isArray(item.value)">
+                <div
+                :key="index"
+                v-for="(subItem, index) in item.value"
+                >
+                  {{subItem}}
+                </div>
+              </template>
+              <template v-else>
+                {{item.value}}
+              </template>
+              </li>
           </ul>
-         </div> 
+         </div>
        </div>
     </div>
 </template>
@@ -81,7 +96,7 @@
       item: {
         required: true
       }
-      
+
     },
     methods: {
     },
@@ -183,29 +198,58 @@
             "addinv_investigationdate": "Addinv investigationdate",
             "cpsurv_conepen_description": "Conepen description",
             "cpsurv_cptmethod": "Cpsurv cptmethod",
-            "cpsurv_trajectory_finaldepth": "Cpsurv trajectory finaldepth"  
+            "cpsurv_trajectory_finaldepth": "Cpsurv trajectory finaldepth"
           },
-          GrondwaterPeilbuizen: {
-            "ID": "ID", 
-            "NAAM": "NAAM",
-            "STOFFEN": "STOFFEN",
-            "OPPERVLAKT": "OPPERVLAKT",
-            "VOLUME": "VOLUME",
-            "BOVENKANT": "BOVENKANT",
-            "ONDERKANT": "ONDERKANT"
+          GrondwaterPolution: {
+            "ID": "ID",
+            "NAAM": "Naam",
+            "CONT_TYP_N": "Type",
+            "STOFFEN": "Stoffen",
+            "COMPONENTS": "Components",
+            "VERONTAARD": "Verontaard",
+            "OPPERVLAKT": "Oppervlakte",
+            "VOLUME": "Volume",
+            "BOVENKANT": "Bovenkant",
+            "ONDERKANT": "Onderkant",
+            "DAT_MUT": "Datum"
+          },
+          GrondwaterPolutionSanitation: {
+            "ID": "ID",
+            "NAAM": "Naam",
+            "CONT_TYP_N": "Type",
+            "OPPERVLAKT": "Oppervlakte",
+            "VOLUME_GR": "Volume",
+            "BOVENKANT": "Bovenkant",
+            "ONDERKANT": "Onderkant",
+            "WRK_SANB_N": "",
+            "WRK_SANO_N": "",
+            "STARTDATUM": "Start datum",
+            "EINDDATUM_": "Eind datum"
+          },
+          GrondwaterPolutionCareMeasures: {
+            "ID": "ID",
+            "NAAM": "Naam",
+            "ZORGMAATRE": "Zorgmaatregel",
+            "STARTDATUM": "Start datum",
+            "EINDDATUM_": "Eind datum",
+            "NAZORGKADE": "Nazorgkade",
+            "NAZORGDUUR": "Nazorgduur",
+            "OPPERVLAKT": "Oppervlakte"
           },
           WarmteKoudeopslag: {
             "NAAM": "Naam",
             "STRAAT": "Straat",
-            "NAZCACODE": "Nazcacode",
+            //"NAZCACODE": "Nazcacode",
             "KWO_STATUS": "KWO Status",
-            "TYPE_ID": "KWO Type",
-            "BODEMZIJDI": "Bodem",	
+            "KWO_TYPE": "KWO Type",
+            "KWO_BODEMZ": "Bodem" ,
+            //"BODEMZIJDI": "Bodem",
             "BOVENKANT": "Diepte bovenkant",
             "ONDERKANT": "Diepte onderkant",
             "CAPACITEIT": "Capaciteit",
             "M3_JAAR": "Onttrekking water (m³/jr)",
-            "VERMOGEN": "Vermogen"
+            "VERMOGEN": "Vermogen",
+            "OPMERKING": "Opmerking"
           },
           Rwsgeluidskaarten: {
             "ondergrens": "Ondergrens (dB)" ,
@@ -223,35 +267,35 @@
             "AANWIJSDATUM": "Aanwijsdatum" ,
             "OBJECT_NUMMER": "Object nummer" ,
             "LINK_PDF": "Link",
-            "MONID": "MONID", 
-            "F2kolum_AD": "F2kolum_AD", 
-            "ADRESSEN": "ADRESSEN", 
-            "MONKODE1": "MONKODE1", 
-            "MONKODE1_O": "MONKODE1_O", 
-            "MONKODE2": "MONKODE2", 
-            "MONKODE2_O": "MONKODE2_O", 
-            "GemMon_ADR": "GemMon_ADR", 
-            "BOUWTKWA": "BOUWTKWA", 
-            "RIJKS_MONN": "RIJKS_MONN", 
-            "GEM_MONNR": "GEM_MONNR", 
-            "WIJK": "WIJK", 
-            "BUURT": "BUURT", 
-            "LOKATIE1": "LOKATIE1", 
-            "LOKATIE2": "LOKATIE2", 
-            "LOKATIE3": "LOKATIE3", 
-            "LOKATIE4": "LOKATIE4", 
-            "VOLUME": "VOLUME", 
-            "CBS_CATEGO": "CBS_CATEGO", 
-            "BOUWJR_VAN": "BOUWJR_VAN", 
-            "BOUWJR_TOT": "BOUWJR_TOT", 
-            "MONWACHT": "MONWACHT", 
-            "DDPLAATSIN": "DDPLAATSIN", 
-            "DDWIJZIGIN": "DDWIJZIGIN", 
-            "BESLUITJR": "BESLUITJR", 
-            "BESLUITNR": "BESLUITNR", 
-            "AANTEKENIN": "AANTEKENIN", 
-            "REDENG_OMS": "REDENG_OMS", 
-            "Monnr": "Monnr", 
+            "MONID": "Munument ID",
+            //"F2kolum_AD": "F2kolum_AD",
+            //"ADRESSEN": "ADRESSEN",
+            //"MONKODE1": "MONKODE1",
+            //"MONKODE1_O": "MONKODE1_O",
+            //"MONKODE2": "MONKODE2",
+            //"MONKODE2_O": "MONKODE2_O",
+            //"GemMon_ADR": "GemMon_ADR",
+            //"BOUWTKWA": "BOUWTKWA",
+            //"RIJKS_MONN": "RIJKS_MONN",
+            //"GEM_MONNR": "GEM_MONNR",
+            //"WIJK": "WIJK",
+            //"BUURT": "BUURT",
+            //"LOKATIE1": "LOKATIE1",
+            //"LOKATIE2": "LOKATIE2",
+            //"LOKATIE3": "LOKATIE3",
+            //"LOKATIE4": "LOKATIE4",
+            //"VOLUME": "VOLUME",
+            //"CBS_CATEGO": "CBS_CATEGO",
+            //"BOUWJR_VAN": "BOUWJR_VAN",
+            //"BOUWJR_TOT": "BOUWJR_TOT",
+            //"MONWACHT": "MONWACHT",
+            //"DDPLAATSIN": "DDPLAATSIN",
+            //"DDWIJZIGIN": "DDWIJZIGIN",
+            //"BESLUITJR": "BESLUITJR",
+            //"BESLUITNR": "BESLUITNR",
+            //"AANTEKENIN": "AANTEKENIN",
+            //"REDENG_OMS": "REDENG_OMS",
+            "Monnr": "Monument Nr",
             "gemnr": "gemnr"
 
           },
@@ -286,7 +330,42 @@
             "mainActivitysbiCodeDescription": "Activiteiten" ,
             "registrationDate": "Startdatum" ,
             "deregistrationDate": "Einddatum"
-          }, 
+          },
+          RijksMonumenten: {
+            "RIJKSMONNR": "Rijksmonument nummer" ,
+            "NAAM": "Naam" ,
+            "TYPEMONUM": "Type monument" ,
+            "CBSCATEGOR": "CBS-categorie" ,
+            "OORSPRFUNC": "Oorspronkelijke functie" ,
+            "SUBCATOMS": "Sub categorie" ,
+            "HFDCATOMS": "Hoofd categorie" ,
+            "TYPECHOBJ": "Type cultuurhistorisch object" ,
+            "BEGBOUWJR": "Begin bouwjaar" ,
+            "EINDBOUWJR": "Eind bouwjaar" ,
+            "BOUWJAAR": "Bouwjaar",
+            BOUWJR_VAN: 'Bouwjaar van',
+            BOUWJR_TOT: 'Bouwjaar tot',
+            "GEMEENTE": "Gemeente" ,
+            "PROVINCIE": "Provincie" ,
+            "PLAATS": "Plaats" ,
+            "STRAAT": "Straat" ,
+            "HUISNUMMER": "Huisnummer" ,
+            "TOEVOEGING": "Toevoeging" ,
+            "POSTCODE": "Postcode" ,
+            "KICH_URL": "Uittreksel van het rijksmonument URL" ,
+            "STATUS": "Status" , //==== for EIN monuments after this line
+            "CATEGORIE": "Categorie" ,
+            "ADRES": "Adres" ,
+            "AANDUIDIN": "Aanduiding" ,
+            "NAAM": "Naam" ,
+            "COMPLEX": "Complex" ,
+            "BOUWJAAR": "Bouwjaar" ,
+            "ARCHITECT": "Architect" ,
+            "AANWIJSDATUM": "Aanwijsdatum" ,
+            "OBJECT_NUMMER": "Object nummer" ,
+            "LINK_PDF": "Link",
+            "MONID": "Munument ID"
+          },
           Rce: {
             "RIJKSMONNR": "Rijksmonument nummer" ,
             "NAAM": "Naam" ,
@@ -320,7 +399,174 @@
             straat: 'Straat',
             datum: 'Datum',
             overheid: 'Overheid'
-          }
+          },
+          GemeenteSonderingen: {
+            BOTTOM_DEPTH_DRP: 'Bottom depth DRP',
+            BOTTOM_DEPTH_MV: 'Bottom depth MV',
+            //BOTTOM_HEIGHT_NAP: 'BOTTOM_HEIGHT_NAP',
+            //COORD_SYSTEM_CD: 'COORD_SYSTEM_CD',
+            DINO_NR: 'Dino #',
+            DISSIPATION_TST_CNT: 'Dissipation',
+            DOCUMENT_CNT: 'Aantal documenten',
+            DOCUMENT_SIZE: 'Document grootte',
+            DRP_TYPE_CD: 'DRP type',
+            //GDW_DBK: 'GDW_DBK',
+            //GEOMETRY: 'GEOMETRY',
+            INDICATIVE_BLN: 'Indicative',
+            INFORMATION_TYPE_CD: 'Information type',
+            NORM_CD: 'Norm',
+            OBJECT_ID: 'Object ID',
+            //POSITION_CD: 'POSITION_CD',
+            //REGISTRATION_DATE: 'REGISTRATION_DATE',
+            SURFACE_ELEVATION: 'Surface elevation',
+            SURVEYING_DATE: 'Surveying date',
+            //TOP_DEPTH_DRP: 'TOP_DEPTH_DRP',
+            //TOP_DEPTH_MV: 'TOP_DEPTH_MV',
+            //TOP_HEIGHT_NAP: 'TOP_HEIGHT_NAP',
+            //TRACE_CNT: 'TRACE_CNT',
+            //TRACE_TYPE_LST: 'TRACE_TYPE_LST',
+            //X_RD_CRD: 'X_RD_CRD',
+            //X_UTM31_WGS84_CRD: 'X_UTM31_WGS84_CRD',
+            //Y_RD_CRD: 'Y_RD_CRD',
+            //Y_UTM31_WGS84_CRD: 'Y_UTM31_WGS84_CRD',
+          },
+          'meetpunten': {
+            "OBJECT_ID": "Object ID",
+            //"GDW_DBK": "GDW_DBK",
+            "DINO_NR": "Nr",
+            "CLUSTER_ID": "Cluster ID",
+            "CLUSTER_LST": "Cluster list",
+            //"X_RD_CRD": "X_RD_CRD",
+            //"Y_RD_CRD": "Y_RD_CRD",
+            "SURFACE_ELEVATION": "Surface Elevation",
+            "SA_CNT": "SA_CNT",
+            "ST_CNT": "ST_CNT",
+            //"GEOMETRY": "GEOMETRY",
+          },
+          BooronderzoekDinoLoket: {
+            "OBJECT_ID": "Object ID",
+            //"GDW_DBK": "GDW_DBK",
+            "DINO_NR": "Dino nr",
+            //"X_RD_CRD": "X_RD_CRD",
+            //"Y_RD_CRD": "Y_RD_CRD",
+            //"X_UTM31_WGS84_CRD": "X_UTM31_WGS84_CRD",
+            //"Y_UTM31_WGS84_CRD": "Y_UTM31_WGS84_CRD",
+            "POSITION_CD": "Position",
+            "DRILLING_DATE": "Drilling date",
+            "DRILL_METHOD_LST": "Drill method",
+            "SURFACE_ELEVATION": "Surface Elevation",
+            "END_DEPTH_MV": "End Depth MV",
+            //"END_HEIGHT_NAP": "END_HEIGHT_NAP",
+            "END_DEPTH_DRP": "End Depth DRP",
+            "DRP_TYPE_CD": "DRP type code",
+            "BM_CNT": "BM_CNT",
+            "CA_CNT": "CA_CNT",
+            "KA_CNT": "KA_CNT",
+            "MF_CNT": "MF_CNT",
+            "MP_CNT": "MP_CNT",
+            //"GEOMETRY": "GEOMETRY",
+            "boringProfile": 'Boor profiel',
+          },
+          'RijksSonderingen': {
+            //addinv_conditions: 'addinv_conditions',
+            //addinv_groundwaterlevel: 'addinv_groundwaterlevel',
+            //addinv_investigationdate: 'addinv_investigationdate',
+            //addinvperformed: 'addinvperformed',
+            broid: 'BRO ID',
+            //cpsurv_cptest_cptresult_elementcount_type: 'cpsurv_cptest_cptresult_elementcount_type',
+            //cpsurv_cptest_cptresult_elementtype_href: 'cpsurv_cptest_cptresult_elementtype_href',
+            //cpsurv_cptest_cptresult_elementtype_name: 'cpsurv_cptest_cptresult_elementtype_name',
+            //cpsurv_cptest_cptresult_elementtype_type: 'cpsurv_cptest_cptresult_elementtype_type',
+            //cpsurv_cptest_featureofinterest_nil: 'cpsurv_cptest_featureofinterest_nil',
+            //cpsurv_cptest_observedproperty_nil: 'cpsurv_cptest_observedproperty_nil',
+            //cpsurv_cptest_phenomenontime: 'cpsurv_cptest_phenomenontime',
+            //cpsurv_cptest_procedure_nil: 'cpsurv_cptest_procedure_nil',
+            //cpsurv_cptest_resulttime: 'cpsurv_cptest_resulttime',
+            //cpsurv_conepen_conediameter: 'cpsurv_conepen_conediameter',
+            cpsurv_conepen_conepentype: 'Conepen type',
+            cpsurv_conepen_conesurfacearea: 'Conepen conesurfacearea',
+            cpsurv_conepen_conesurfacequotient: 'Conepen cone surface quotient',
+            cpsurv_conepen_conetofrictionsleevedistance: 'Conepen cone to friction sleeve distance',
+            cpsurv_conepen_description: 'Conepen Description',
+            cpsurv_conepen_frictionsleevesurfacearea: 'Friction sleeve surface area',
+            cpsurv_conepen_frictionsleevesurfacequotient: 'Friction sleeve surface quotient',
+            cpsurv_conepen_zlmeas_coneresistanceafter: 'Cone resistance after',
+            cpsurv_conepen_zlmeas_coneresistancebefore: 'Cone resistance before',
+            //cpsurv_conepen_zlmeas_inclinationewafter: 'cpsurv_conepen_zlmeas_inclinationewafter',
+            //cpsurv_conepen_zlmeas_inclinationewbefore: 'cpsurv_conepen_zlmeas_inclinationewbefore',
+            //cpsurv_conepen_zlmeas_inclinationnsafter: 'cpsurv_conepen_zlmeas_inclinationnsafter',
+            //cpsurv_conepen_zlmeas_inclinationnsbefore: 'cpsurv_conepen_zlmeas_inclinationnsbefore',
+            //cpsurv_conepen_zlmeas_inclinationresultantafter: 'cpsurv_conepen_zlmeas_inclinationresultantafter',
+            //cpsurv_conepen_zlmeas_inclinationresultantbefore: 'cpsurv_conepen_zlmeas_inclinationresultantbefore',
+            //cpsurv_conepen_zlmeas_localfrictionafter: 'cpsurv_conepen_zlmeas_localfrictionafter',
+            //cpsurv_conepen_zlmeas_localfrictionbefore: 'cpsurv_conepen_zlmeas_localfrictionbefore',
+            //cpsurv_conepen_zlmeas_porepressureu1after: 'cpsurv_conepen_zlmeas_porepressureu1after',
+            //cpsurv_conepen_zlmeas_porepressureu1before: 'cpsurv_conepen_zlmeas_porepressureu1before',
+            //cpsurv_conepen_zlmeas_porepressureu2after: 'cpsurv_conepen_zlmeas_porepressureu2after',
+            //cpsurv_conepen_zlmeas_porepressureu2before: 'cpsurv_conepen_zlmeas_porepressureu2before',
+            //cpsurv_conepen_zlmeas_porepressureu3after: 'cpsurv_conepen_zlmeas_porepressureu3after',
+            //cpsurv_conepen_zlmeas_porepressureu3before: 'cpsurv_conepen_zlmeas_porepressureu3before',
+            //cpsurv_cptmethod: 'cpsurv_cptmethod',
+            //cpsurv_dissipationtest_procedure_nil: 'cpsurv_dissipationtest_procedure_nil',
+            //cpsurv_dissipationtestperformed: 'cpsurv_dissipationtestperformed',
+            //cpsurv_dissipationtest{}_procedure_nil': 'cpsurv_dissipationtest{}_procedure_nil',
+            //cpsurv_finalprocessingdate: 'cpsurv_finalprocessingdate',
+            //cpsurv_par_coneresistance: 'cpsurv_par_coneresistance',
+            //cpsurv_par_correctedconeresistance: 'cpsurv_par_correctedconeresistance',
+            //cpsurv_par_depth: 'cpsurv_par_depth',
+            //cpsurv_par_elapsedtime: 'cpsurv_par_elapsedtime',
+            //cpsurv_par_electricalconductivity: 'cpsurv_par_electricalconductivity',
+            //cpsurv_par_frictionratio: 'cpsurv_par_frictionratio',
+            //cpsurv_par_inclinationew: 'cpsurv_par_inclinationew',
+            //cpsurv_par_inclinationns: 'cpsurv_par_inclinationns',
+            //cpsurv_par_inclinationresultant: 'cpsurv_par_inclinationresultant',
+            //cpsurv_par_inclinationx: 'cpsurv_par_inclinationx',
+            //cpsurv_par_inclinationy: 'cpsurv_par_inclinationy',
+            //cpsurv_par_localfriction: 'cpsurv_par_localfriction',
+            //cpsurv_par_magneticdeclination: 'cpsurv_par_magneticdeclination',
+            //cpsurv_par_magneticfieldstrengthtotal: 'cpsurv_par_magneticfieldstrengthtotal',
+            //cpsurv_par_magneticfieldstrengthx: 'cpsurv_par_magneticfieldstrengthx',
+            //cpsurv_par_magneticfieldstrengthy: 'cpsurv_par_magneticfieldstrengthy',
+            //cpsurv_par_magneticfieldstrengthz: 'cpsurv_par_magneticfieldstrengthz',
+            //cpsurv_par_magneticinclination: 'cpsurv_par_magneticinclination',
+            //cpsurv_par_netconeresistance: 'cpsurv_par_netconeresistance',
+            //cpsurv_par_penetrationlength: 'cpsurv_par_penetrationlength',
+            //cpsurv_par_porepressureu1: 'cpsurv_par_porepressureu1',
+            //cpsurv_par_porepressureu2: 'cpsurv_par_porepressureu2',
+            //cpsurv_par_porepressureu3: 'cpsurv_par_porepressureu3',
+            //cpsurv_par_poreratio: 'cpsurv_par_poreratio',
+            //cpsurv_par_temperature: 'cpsurv_par_temperature',
+            //cpsurv_procedure_expertcorrectionperformed: 'cpsurv_procedure_expertcorrectionperformed',
+            //cpsurv_procedure_interruptionprocessingperformed: 'cpsurv_procedure_interruptionprocessingperformed',
+            //cpsurv_procedure_signalprocessingperformed: 'cpsurv_procedure_signalprocessingperformed',
+            //cpsurv_qualityclass: 'cpsurv_qualityclass',
+            //cpsurv_sampledfeature_nil: 'cpsurv_sampledfeature_nil',
+            //cpsurv_sensorazimuth: 'cpsurv_sensorazimuth',
+            //cpsurv_stopcriterion: 'cpsurv_stopcriterion',
+            //cpsurv_trajectory_finaldepth: 'cpsurv_trajectory_finaldepth',
+            //cpsurv_trajectory_predrilleddepth: 'cpsurv_trajectory_predrilleddepth',
+            cptstandard: 'CPT standard',
+            //delloc_horizontalpositioningdate: 'delloc_horizontalpositioningdate',
+            //delloc_horizontalpositioningmethod: 'delloc_horizontalpositioningmethod',
+            //delvpos_localverticalreferencepoint: 'delvpos_localverticalreferencepoint',
+            //delvpos_offset: 'delvpos_offset',
+            //delvpos_verticaldatum: 'delvpos_verticaldatum',
+            //delvpos_verticalpositioningdate: 'delvpos_verticalpositioningdate',
+            //delvpos_verticalpositioningmethod: 'delvpos_verticalpositioningmethod',
+            //deliveryaccountableparty: 'deliveryaccountableparty',
+            //deliverycontext: 'deliverycontext',
+            //qualityregime: 'qualityregime',
+            //reghis_corrected: 'reghis_corrected',
+            //reghis_deregistered: 'reghis_deregistered',
+            //reghis_objectregistrationtime: 'reghis_objectregistrationtime',
+            reghis_registrationcompletiontime: 'Registration completion time',
+            //reghis_registrationstatus: 'reghis_registrationstatus',
+            //reghis_reregistered: 'reghis_reregistered',
+            //reghis_underreview: 'reghis_underreview',
+            researchreportdate: 'Research report date',
+            //stdloc_coordinatetransformation: 'stdloc_coordinatetransformation',
+            //surveypurpose: 'surveypurpose',
+          },
         }
       }
     },
@@ -348,7 +594,7 @@
                 label: this.accordion[this.item.source][key]
               }
                }
-            } 
+            }
           }));
         } else {
           return _.compact(_.keys(props).map(key => {
@@ -364,7 +610,7 @@
               value: props[key],
               label: this.accordion[this.item.source][key]
             }
-          } 
+          }
         }));
       }
     },

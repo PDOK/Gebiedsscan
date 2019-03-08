@@ -22,7 +22,6 @@ import anchorme from "anchorme";
         },
         computed: {
             visie() {
-                console.log(this.item.properties.extra_vision);
                 if (this.item.properties.extra_vision) {
                     return anchorme(this.item.properties.extra_vision, {
                         attributes:[

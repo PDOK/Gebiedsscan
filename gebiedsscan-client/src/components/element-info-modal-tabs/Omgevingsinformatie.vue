@@ -354,15 +354,12 @@
                     this.highlightedItem = targetFeature;
 
                     if (targetFeature && targetFeature.setStyle) {
-                        console.log('targetFeature: ', targetFeature);
-                        console.log('targetFeature.setStyle: ', targetFeature.setStyle);
                         targetFeature.setStyle({
                             weight: 3,
                             color: 'blue',
                             fillOpacity: 0.4
                         });
                     }
-                    
             },
             selectItem(item) {
                 if (item && !this.accordion[item].active) {
@@ -377,14 +374,13 @@
                     if (!this.mapData[item]) {return;}
 
                     this.accordion[item].layer = this.manager.cloneLayer(this.mapData[item].layer);
-                    
+
                     if (this.accordion[item] && this.accordion[item].layer) {
                         this.accordion[item].layer.on("click", (event) => {
                             console.log('event', event)
                             Vue.set(this.accordion[item], 'selectedFeature', event.layer.feature);
                             this.highlightItem(event.layer, this.accordion[item].layer);
                         });
-                            
                         this.accordion[item].layer.addTo(this.manager.map);
                         this.manager.map.flyToBounds(
                             L.geoJson(this.accordion[item].layer.toGeoJSON()).getBounds(),{ maxZoom: 13, easeLinearity: 0.1 }
@@ -414,7 +410,6 @@
                 });
             } else if (this.item.geometry.type == "Polygon"){
                 this.manager.getUnderPolygon(this.item.geometry).then(results => {     
-                    console.log('results: ', results);
                     _.each(results, result => {
                         Vue.set(this.mapData, result.source, result);
                     });

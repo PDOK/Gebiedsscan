@@ -72,7 +72,6 @@
                         layer="Bomen">
                     Bomen
                   </LayerToggle>
-                  
                 </div>
               </div>
             </li>
@@ -85,27 +84,39 @@
                       <LayerToggle :params="params" :manager="manager" layer="Archeologie">
                         Archeologie
                       </LayerToggle>
-                      <LayerToggle :params="params" :manager="manager" layer="Sonderingen">
-                        Sonderingen
+                      <LayerToggle :params="params" :manager="manager" layer="GemeenteSonderingen">
+                        Sonderingen (gemeenteniveau)
+                      </LayerToggle>
+                      <LayerToggle :params="params" :manager="manager" layer="RijksSonderingen">
+                        Sonderingen (rijksniveau)
                       </LayerToggle>
                       <LayerToggle :params="params" :manager="manager" layer="WarmteKoudeopslag">
-                        Warmte-koudeopslag
+                        Warmte- en koudeopslag
+                      </LayerToggle>
+                      <LayerToggle :params="params" :manager="manager" layer="BooronderzoekDinoLoket">
+                        Booronderzoek
                       </LayerToggle>
                       <br>
                       <ul class="uk-nav">
-                      <li class="uk-active">
-                        <h6 class="uk-margin-remove-bottom">Grondwater</h6>
-                          <LayerToggle :params="params" :manager="manager" layer="GrondwaterLevels">
-                          Levels
-                          </LayerToggle>
-                          <LayerToggle :params="params" :manager="manager" layer="GrondwaterPeilbuizen">
-                          Peilbuizen
-                          </LayerToggle>
-                          <LayerToggle :params="params" :manager="manager" layer="meetpunten">
-                          Meetpunten
-                          </LayerToggle>
-                      </li>
-                    </ul>
+                        <li class="uk-active">
+                          <h6 class="uk-margin-remove-bottom">Grondwater</h6>
+                            <LayerToggle :params="params" :manager="manager" layer="GrondwaterLevels">
+                            Grondwaterstanden
+                            </LayerToggle>
+                            <LayerToggle :params="params" :manager="manager" layer="GrondwaterPolution">
+                            Verontreiniging gebieden
+                            </LayerToggle>
+                            <LayerToggle :params="params" :manager="manager" layer="GrondwaterPolutionSanitation">
+                            Verontreiniging saneringen
+                            </LayerToggle>
+                            <LayerToggle :params="params" :manager="manager" layer="GrondwaterPolutionCareMeasures">
+                            Verontreiniging zorgmaatregelen
+                            </LayerToggle>
+                            <LayerToggle :params="params" :manager="manager" layer="meetpunten">
+                            Meetpunten
+                            </LayerToggle>
+                        </li>
+                      </ul>
                   </div>
                 </li>
               </ul>
@@ -133,13 +144,13 @@
                     </div>
 
                     <div class="">
-                      <LayerToggle :params="params" :manager="manager"
+                      <!-- <LayerToggle :params="params" :manager="manager"
                             layer="Rce">
                         Rijksmonumenten (landelijk)
-                      </LayerToggle>
+                      </LayerToggle> -->
                       <LayerToggle :params="params" :manager="manager"
                             layer="RijksMonumenten">
-                        Rijksmonumenten (Eindhoven)
+                        Rijksmonumenten
                       </LayerToggle>
                       <SearchCheckboxFilter :params="params" :manager="manager"
                                 property="rijksaanduiding">
@@ -149,7 +160,7 @@
                       <RangeFilter :params="params" :manager="manager"
                             property="rijksbouwjaar">
                         Bouwjaar
-                      </RangeFilter>  
+                      </RangeFilter>
                     </div>
 
                     <div class="">
@@ -165,7 +176,7 @@
                     <div class="">
                       <LayerToggle :params="params" :manager="manager"
                             layer="Marienhage">
-                        Cultuurhistorie (monumenten en archeologie) 
+                        Cultuurhistorie (monumenten en archeologie)
                       </LayerToggle>
                     </div>
                   </div>

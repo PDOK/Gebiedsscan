@@ -161,24 +161,6 @@
       this.manager.filter({searchQuery: ' '});//to show all projects at the beginning
 
       var el = document.querySelector(".sk-container-results");
-      // console.log('el: ', el);
-       
-
-      el.onwheel = (e) => {
-        // console.log('el00: ', e);
-        // console.log('el00: ', e.clientX);
-        // console.log('screenX: ', e.screenX);
-        // console.log('clientX: ', e.clientX);
-        // console.log('deltaX: ', e.deltaX);
-        // console.log('layerX: ', e.layerX);
-      }
-
-
-      // $('.sk-container-results').on('scroll', function(event) {
-      //     console.log('sdfsd')
-      //     if (event.deltaY > 0){$.fn.fullpage.moveSlideRight();}
-      //     else{$.fn.fullpage.moveSlideLeft();}
-      // });
     },
   }
 

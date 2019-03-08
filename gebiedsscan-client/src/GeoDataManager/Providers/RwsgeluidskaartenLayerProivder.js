@@ -18,6 +18,8 @@ export default class extends LayerProvider {
     this.type = this.TYPE.TILES;
     this.zIndex = 10;
     this.itemGeoJsonLayer = null;
+    // restrict data retrieval to these zoom level bounds:
+    this.zoomBounds = [10, 13];
 
     this.legend = {
       gebiedsgrens: {
@@ -62,7 +64,7 @@ export default class extends LayerProvider {
             console.error(error, data);
             resolve({});
           }
-          
+
           let style = {
             stroke: false,
             fillColor: '#000000',
@@ -87,7 +89,7 @@ export default class extends LayerProvider {
   }
 
   getUnderPolygon(polygon) {
-    
+
     let point = turf.flip(turf.centroid(polygon)).geometry.coordinates;
     return this.getUnderPoint(point);
   }
@@ -129,4 +131,3 @@ export default class extends LayerProvider {
     return event.latlng;
   }
 }
-

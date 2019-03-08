@@ -7,13 +7,11 @@
     overflow: hidden;
 }
 
-
-
 .sk-info-modal-header {
-    
+
     & > .uk-container {
         padding: 0;
-        background: rgba(42, 85, 135, 0.2);    
+        background: rgba(42, 85, 135, 0.2);
     }
 }
 
@@ -29,7 +27,7 @@
 
     .sk-modal-content {
         // padding: 20px;
-    
+
         .uk-tab {
             flex-direction: column;
         }
@@ -44,7 +42,7 @@
     &:hover {
         color: #4572a5;
         & > svg > g >g >use {
-            fill: #4572a5; 
+            fill: #4572a5;
         }
     }
 
@@ -57,16 +55,16 @@
     &:not(:first-child) {
         border-right: 1px rgba(42, 85, 135, 0.2) solid;
     }
-    
+
     .liked {
         & > svg > g >g >use {
-            fill: $base-red; 
+            fill: $base-red;
         }
 
         &:hover {
             color: #2A5587;
             & > svg > g >g >use {
-                fill: $base-red; 
+                fill: $base-red;
             }
         }
     }
@@ -103,6 +101,26 @@
     border-radius: 5px;
     cursor: pointer;
 }
+.dropdown-ondergrond {
+    position: absolute;
+    height: 265px;
+    top: 144px;
+    left: 17px;
+    z-index: 2000;
+    border: 2px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ffff;
+    padding: 2px;
+    width: 20%;
+}
+.ondergrond-top-panel {
+    padding-bottom: 20px !important;
+}
+.ondergrond-bottom-panel {
+    margin-top: 139px !important;
+    padding-bottom: 70px;
+}
 
 .sk-preview-modal-description-elements {
     list-style: none;
@@ -125,4 +143,43 @@
 
 .uk-card-title-nieuws {
     font-size: 1.2em;
+}
+.info-modal-ondergrond-header {
+    background-color: #2A5587;
+    color: #ffff;
+    padding: 8px;
+    border-radius: 7px;
+}
+.hr-border {
+    margin-top: 4px
+}
+.uk-accordion-content-ondergrond {
+    font-size: 0.9em;
+    padding:20px;
+}
+
+[data-component="LayerDropdown"] {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    > * {
+        flex: 0 0 auto;
+    }
+
+    > .ondergrond-legend-box {
+        flex: 1 1 auto;
+        overflow: auto;
+    }
+}
+
+.svg-icon {
+    height: 1.5em;
+    width: 1.5em;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0 0.5em 0 0;
+}
+
+.svg-icon.down {
+    vertical-align: middle;
 }

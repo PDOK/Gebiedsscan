@@ -4,6 +4,31 @@
       <button v-bind:class="{ 'sk-button-red': !visible, 'sk-button-bold': !visible }" @click="visible = false" class="uk-button uk-button-small sk-button ">Kaart</button>
       <button v-bind:class="{ 'sk-button-red': visible, 'sk-button-bold': visible }" @click="visible = true;" class="uk-button uk-button-small sk-button">Lijst</button>
     </div>
+    <div id="waterlevels" class="sk-legend-list uk-box-shadow-large" style="visibility: hidden">
+        <ul class="uk-list"> Legenda (in m):
+          <li>
+            <span class="item" style="background-color: #2A5587"></span> 0 - 0,5
+          </li>
+           <li>
+            <span class="item" style="background-color: #2FA9ED"></span> 0,5 - 0,7
+          </li>
+           <li>
+            <span class="item" style="background-color: #63DF58"></span> 0,7 - 0,9
+          </li>
+           <li>
+            <span class="item" style="background-color: #EFF34B"></span> 0.9 - 1.1
+          </li>
+          <li>
+            <span class="item" style="background-color: #FFC960"></span> 1,1 - 1,3
+          </li>
+          <li>
+            <span class="item" style="background-color: #ffa77f"></span> 1,3 - 1,5
+          </li>
+          <li>
+            <span class="item" style="background-color: #ff7f7f"></span> >1,5
+          </li>
+        </ul>
+      </div>
      <div v-show="visible" class="uk-card uk-card-default uk-card-body uk-card-small uk-width-1-3@m sk-project-list-control uk-box-shadow-large">
       <h3 class="uk-card-title uk-card-title-small">Activiteit op kaart</h3>
       <ul uk-tab class="uk-flex-nowrap">
@@ -15,7 +40,7 @@
         <router-link class="uk-link-reset" v-for="item in currentList" :key="item.id" :to="{ name: 'explore', params: { subroute: 'bekijken', searchtype: 'element', query: item.properties.name }}" >
           <li @click="visible = false" class="sk-elements-item">
             <h6 class="sk-color-red uk-text-bold uk-margin-remove-bottom">
-              {{item.properties.name}} 
+              {{item.properties.name}}
             </h6>
             <p class="sk-elements-list-item-description"><span class="uk-text-capitalize">{{item.properties.category}}</span> <span v-if="item.properties.address">in <strong>{{item.properties.address.city}}</strong></span></p>
             <div class="uk-grid-small uk-grid" uk-grid="">
@@ -42,7 +67,7 @@
       closed: Boolean,
       bus: {
         type: Object
-      }
+      },
     },
     data() {
       return {
@@ -66,7 +91,7 @@
             if (item.properties.category) {
               return this.content.filter(item => item.properties.category !== 'deelproject' && item.properties.category !== 'project')
             }
-          }); 
+          });
         } else {
           return this.content.filter(item => {
             if (item.properties.category) {
@@ -74,12 +99,12 @@
             }
           });
         }
-      }
+      },
     },
     methods: {
       setList(list){
         this.selectedList = list;
-      }
+      },
     },
     mounted() {
       console.log(this.content)
@@ -91,7 +116,7 @@
     },
     watch: {
       closed: {
-         //used to notify internally if the element needs to be closed (parent's order) 
+         //used to notify internally if the element needs to be closed (parent's order)
          //hacky but effective
         handler(closed) {
           this.visible = false;

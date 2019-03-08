@@ -45,10 +45,12 @@ export default class extends LayerProvider {
   render() {
     this.visible = true;
 
-    this.geoJSONEindhoven = require("../../assets/data/Eindhoven_rijksmonumenten.json");
-    this.geoJSONUtrecht = require("../../assets/data/Utrecht_gebiedsscan_rijksmonumenten.json");
+    const geoJSONEindhoven = require("../../assets/data/Eindhoven_rijksmonumenten.json");
+    const geoJSONUtrecht = require("../../assets/data/rijksmonumenten/utrecht_rijksmonum_epsg4326.json");
+    this.geoJSON = geoJSONEindhoven;
+    this.geoJSON.features = [...this.geoJSON.features, ...geoJSONUtrecht.features];
 
-    this.layer = new L.GeoJSON(null, {
+    this.layer = new L.GeoJSON(this.geoJSON, {
       pointToLayer(feature, latlng) {
         return L.circleMarker(latlng, {
           radius: 4,
@@ -66,9 +68,7 @@ export default class extends LayerProvider {
         }
       }
     });
-    this.geoJSON = this.geoJSONEindhoven;
-    this.geoJSON.features = [...this.geoJSON.features, ...this.geoJSONUtrecht.features];
-    this.layer.addData(this.geoJSON);
+    this.layer.addData(geoJSONUtrecht);
 
     return this.layer;
   }
@@ -81,41 +81,42 @@ export default class extends LayerProvider {
   filter(params = null) {
     params = params || this.manager.params;
     let filtered = this.geoJSON.features.filter(feature => {
-      if (params.query.rijksaanduiding &&
-        (
-          feature.properties.AANDUIDING &&
-          params.query.rijksaanduiding.indexOf(feature.properties.AANDUIDING) === -1
-        )
-      ) {
-        return false;
-      }
+      // if (params.query.rijksaanduiding &&
+      //   (
+      //     feature.properties.AANDUIDING &&
+      //     params.query.rijksaanduiding.indexOf(feature.properties.AANDUIDING) === -1
+      //   )
+      // ) {
+      //   return false;
+      // }
 
-      if (params.query.rijksbouwjaar) {
-        let year = null;
-        if (feature.properties.BOUWJAAR) {
-          year = feature.properties.BOUWJAAR.match(/[0-9]{4}/);
-          if (year) {
-            year = year[0];
-          }
-        } else {
-          year = feature.properties.BOUWJR_VAN ||
-            feature.properties.BOUWJR_TOT ||
-            feature.properties.BEGBOUWJR ||
-            feature.properties.EINDBOUWJR;
+      // if (params.query.rijksbouwjaar) {
+      //   let year = null;
+      //   if (feature.properties.BOUWJAAR) {
+      //     year = feature.properties.BOUWJAAR.match(/[0-9]{4}/);
+      //     if (year) {
+      //       year = year[0];
+      //     }
+      //   } else {
+      //     year = feature.properties.BOUWJR_VAN ||
+      //       feature.properties.BOUWJR_TOT ||
+      //       feature.properties.BEGBOUWJR ||
+      //       feature.properties.EINDBOUWJR;
 
-        }
+      //   }
 
-        if (year) {
-          year = parseInt(year);
-          if (
-            parseInt(params.query.rijksbouwjaar.max) < year ||
-            parseInt(params.query.rijksbouwjaar.min) > year) {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
+      //   if (year) {
+      //     year = parseInt(year);
+      //     if (
+      //       parseInt(params.query.rijksbouwjaar.max) < year ||
+      //       parseInt(params.query.rijksbouwjaar.min) > year) {
+      //       return false;
+      //     }
+      //   } else {
+      //     console.log(feature)
+      //     return false;
+      //   }
+      // }
       return true;
     });
 

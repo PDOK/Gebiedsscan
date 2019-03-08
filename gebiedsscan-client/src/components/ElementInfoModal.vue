@@ -120,6 +120,7 @@
                 <li @click="selectTab('overzicht')" class="uk-active"><a href="#">Overzicht</a></li>
                 <li @click="selectTab('visie')"><a href="#">Visie</a></li>
                 <li @click="selectTab('toetsingskaders')"><a href="#">Toetsingskaders</a></li>
+                <li @click="selectTab('ondergrond')"><a href="#">Ondergrond</a></li>
                 <li @click="selectTab('vergunningen')"><a href="#">Vergunningen</a></li>
                 <li @click="selectTab('omgevingsinformatie')"><a href="#">Omgevingsinformatie</a></li>
                 <li @click="selectTab('nieuws')"><a href="#">Nieuws</a></li>
@@ -131,6 +132,7 @@
 
            <div class="sk-image-map-container">
             <div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+
               <div class="image-map-item">
                 <template v-if="!streetViewVisible">
                   <img class="hero-image" :src="item.properties.hero_image" alt="">
@@ -151,8 +153,15 @@
                   @managerSetup="managerSetup"
                 ></BaseMap>
 
-                <img v-if="streetViewVisible" @click="toggleStreetView()" class="street-view-image" :src="item.properties.hero_image" alt="">
-                <img v-if="!streetViewVisible" @click="toggleStreetView()" class="street-view-image" :src="panoImage" alt="">
+                <img v-if="streetViewVisible && 
+                  !loadedTabs['ondergrond']" 
+                  @click="toggleStreetView()" 
+                  class="street-view-image" 
+                  :src="item.properties.hero_image" alt="">
+                <img v-if="!streetViewVisible  && !loadedTabs['ondergrond']" 
+                  @click="toggleStreetView()" 
+                  class="street-view-image"
+                  :src="panoImage" alt="">
               </div>
             </div>
           </div>
@@ -165,6 +174,9 @@
             </div>
             <div>
               <Toetsingskaders :tabloaded="loadedTabs['toetsingskaders']" :manager="manager" :item="item" :mapData="mapData"></Toetsingskaders>
+            </div>
+            <div>
+              <Ondergrond :params="params" :tabloaded="loadedTabs['ondergrond']" :manager="manager" :item="item" :mapData="mapData"></Ondergrond>
             </div>
             <div>
               <Vergunningen :tabloaded="loadedTabs['vergunningen']" :manager="manager" :item="item" :mapData="mapData"></Vergunningen>
@@ -210,6 +222,7 @@ export default {
       overzicht: false,
       visie: false,
       toetsingskaders: false,
+      ondergrond: false,
       vergunningen: false,
       omgevingsinformatie: false,
       nieuws: false,
@@ -241,7 +254,10 @@ export default {
     params: {
     query: {},
     layers: {
-      Bestemmingsplangebied: false
+      Bestemmingsplangebied: false,
+      Sondeeronderzoek: false,
+      Verontreiniging: false,
+      Grondwaterstand: false
     },
     filterOptions: {},
     options: {
@@ -249,7 +265,7 @@ export default {
     }
     },
     mapData: {},
-    highLightedItemLayer: null
+    highLightedLayer: null
   };
   },
   props: {
@@ -282,7 +298,9 @@ export default {
       Vue.set(this.loadedTabs, key, key === tab);
       // this.loadedTabs[key] = key === tab;
     })
-
+    this.manager._hideLayer("Grondwaterstand");
+    this.manager._hideLayer("Verontreiniging");
+    this.manager._hideLayer("Sondeeronderzoek");
     this.manager._hideLayer("Bestemmingsplangebied");
     this.manager._hideLayer("Archeologie");
     this.manager._hideLayer("Rwsgeluidskaarten");
@@ -307,7 +325,7 @@ export default {
   },
   submitInterested() {
     axios.post(
-      'https://kadaster-api.test.semaku.com/gebiedscan/project/interested-users', 
+      config.baseUrl + '/gebiedscan/project/interested-users', 
       this.interested_user).then(({data}) => {
         if (data.responseCode === 200) {
           UIkit.notification("Deelnemer succesvol aangemaakt", {status: 'success'})

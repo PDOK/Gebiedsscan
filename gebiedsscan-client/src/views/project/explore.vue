@@ -111,10 +111,25 @@
             name: "Archeologie", standard: false
           },
           {
-            name: "Sonderingen", standard: false
+            name: "GemeenteSonderingen", standard: false
           },
           {
-            name: "GrondwaterPeilbuizen", standard: false
+            name: "RijksSonderingen", standard: false
+          },
+          {
+            name: "Sondeeronderzoek", standard: false
+          },
+          {
+            name: "GrondwaterPeilbuizenTab", standard: false
+          },
+          {
+            name: "GrondwaterPolution", standard: false
+          },
+          {
+            name: "GrondwaterPolutionSanitation", standard: false
+          },
+          {
+            name: "GrondwaterPolutionCareMeasures", standard: false
           },
           {
             name: "GrondwaterLevels", standard: false
@@ -151,7 +166,10 @@
           },
           {
             name: "Bekendmakingen", standard: false
-          }
+          },
+          {
+            name: "BooronderzoekDinoLoket", standard: false
+          },
         ]
       }
     },
@@ -167,7 +185,6 @@
             this.bus.$emit('infoUnderPoint', results);
             if (this.$route.params.subroute === 'mijnplan') return;
             this.infoObjects = results;
-            console.log('this.infoObjects: ', this.infoObjects);
 
             let elementResult = results.find((result) => result.source === 'ElementsLayer');
 
@@ -184,7 +201,6 @@
                 this.$router.push({name: 'explore', params: {subroute: 'bekijken'}})
                 this.mapPreviewData = results;
               }
-              
             }
           })
           .catch(error => console.error(error));
@@ -192,14 +208,12 @@
       projectsChanged(projects)
       {
         this.projects = projects;
-        console.log('this.projects: ', this.projects);
       },
       locationsChanged(locations)
       {
         if (locations[0]) {
           let location = locations[0].centroide_ll;
           this.bounds = WKT.parse(location);
-          
         }
       },
       projectPreviewClosed()
@@ -216,13 +230,21 @@
         this.manager = managerReference;
 
         this.manager.map.on('moveend', (event) => {
-          console.log('event: ', event.target._lastCenter);
-
           let point = event.target._lastCenter;
-          axios.get(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?bq=type:gemeente&lat=${point.lat}&lon=${point.lng}&rows=1`).then(({data}) => {
-            let gemeente = data.response.docs[0].weergavenaam;
-            this.bus.$emit('gemeenteChanged', gemeente);
-          });
+          if (point && point.lng && point.lat) {
+            const params = {
+              lat: point.lat,
+              lon: point.lng,
+              rows: 1,
+            }
+            axios.get(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?bq=type:gemeente`,{
+              params,
+            })
+            .then(({data}) => {
+              let gemeente = data.response.docs[0].weergavenaam;
+              this.bus.$emit('gemeenteChanged', gemeente);
+            });
+          }
         });
 
       },
@@ -276,7 +298,6 @@
     },
     computed: {},
     beforeRouteLeave(to, from, next) {
-      console.log('Explore: beforeRouteLeave: ', from);
       UIkit.offcanvas('#offcanvas-flip').hide();
       next();
     }

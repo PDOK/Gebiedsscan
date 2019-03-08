@@ -13,10 +13,12 @@
 
 .sk-elements-item {
     padding: 10px;
+    font-size: 10px;
 }
 
 li.sk-elements-item {
     position: relative;
+    font-size: 9px;
     &:hover:before {
         content: "";
         position: absolute;
@@ -27,7 +29,6 @@ li.sk-elements-item {
         z-index: 1200;
     }
 }
-
 
 .uk-card-title-small {
     font-size: 1rem;
@@ -44,7 +45,7 @@ li.sk-elements-item {
 
     & > button {
         padding: 7px 15px;
-        font-size: 0.8em;
+        font-size: 0.7em;
         color: $base-gray;
     }
 
@@ -58,9 +59,24 @@ li.sk-elements-item {
         border-bottom-right-radius: 10px;
     }
 }
+.sk-legend-list {
+    top: 77px;
+    right: 20px;
+    position: absolute;
+    z-index: 1002;
+    border-radius: 10px;
+    background-color: #ffff;
+    padding: 8px;
+    font-size: 10px;
+}
+.item {
+    padding: 10px;
+    margin-bottom: -4px !important;
+    display: inline-block;
+  }
 
 .sk-elements-list-item-description {
-    font-size: 12px;
+    font-size: 10px;
     padding: 5px 0 10px 0;
     margin: 0;
     color: #999;

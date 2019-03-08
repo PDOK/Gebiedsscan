@@ -31,7 +31,6 @@ export default class {
     }
   }
 
-
   getZoomBounds() {
     if (this.zoomBounds) {
       return this.zoomBounds instanceof Array ?
@@ -65,6 +64,10 @@ export default class {
         this.manager.map.removeLayer(this.layer);
       }
       this.visible = false;
+      // hardcode the removal of the watel levels legend
+      if (this.name === "GrondwaterLevels") {
+        document.getElementById("waterlevels").style.visibility = "hidden";
+      }
     }
   }
 
@@ -85,6 +88,10 @@ export default class {
         this.manager.map.addLayer(this.layer);
       }
       this.visible = true;
+      // add the watel levels legend show option
+      if (this.name === "GrondwaterLevels") {
+        document.getElementById("waterlevels").style.visibility = "visible";
+      }
     }
   }
 
@@ -107,6 +114,15 @@ export default class {
           style: typeof this.legend[name] === 'string' ?
             {'backgroundColor': this.legend[name]} :
             this.legend[name]
+        }
+      });
+    } else if (this.OndergrondLegend) {
+      return Object.keys(this.OndergrondLegend).map(name => {
+        return {
+          name,
+          style: typeof this.OndergrondLegend[name] === 'string' ?
+            {'backgroundColor': this.OndergrondLegend[name]} :
+            this.OndergrondLegend[name]
         }
       });
     }
@@ -139,7 +155,6 @@ export default class {
         },
       });
 
-
       let elements = this.layer.getLayers()
         .filter(object => {
           return object.getBounds ? bounds.overlaps(object.getBounds()) : bounds.contains(object.getLatLng());
@@ -161,7 +176,6 @@ export default class {
           return layer.feature.properties
         });
 
-
       resolve({
         source: this.name,
         label: this.label ? this.label : this.name,
@@ -173,12 +187,11 @@ export default class {
 
   getUnderPolygon(polygon, bounds, distance) {
     return new Promise((resolve) => {
-      
+
       if (this.layer === null || this.type !== this.TYPE.GEOMETRY || !this.visible) {
         resolve([]);
         return;
       }
-      
 
       let geoJSONLayer = new L.GeoJSON(null, {
         pointToLayer: (feature, latlng) => {
@@ -201,7 +214,6 @@ export default class {
           }
         }
       });
-
 
       let elements = this.layer.getLayers()
         .filter(object => {
@@ -244,11 +256,9 @@ export default class {
   filter(params = []) {
   }
 
-
   changeEvent(event) {
     return event.data.map(item => item);
   }
-
 
   _registerEventListeners() {
     Object.keys(this.eventCallbacks).forEach(event => {

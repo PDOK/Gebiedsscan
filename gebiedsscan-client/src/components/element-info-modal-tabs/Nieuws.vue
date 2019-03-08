@@ -42,9 +42,6 @@
         },
         methods: {
         },
-        mounted() {
-            console.log('item',this.item);
-        }
 
     }
 

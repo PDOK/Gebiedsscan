@@ -102,7 +102,6 @@
                                         let dateB = new Date(b.datum_binnenkomst.split(/-/)[0], b.datum_binnenkomst.split(/-/)[1], b.datum_binnenkomst.split(/-/)[2])
                                         return dateB - dateA;
                                     });
-                                    console.log('ver', result);
                                 }
                                 Vue.set(this.mapData, result.source, result);
                             });

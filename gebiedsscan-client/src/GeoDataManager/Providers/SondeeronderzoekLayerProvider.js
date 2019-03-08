@@ -1,25 +1,48 @@
 import LayerProvider from "../LayerProvider";
-import turf from 'turf';
 import axios from 'axios';
+import turf from 'turf';
+import _ from 'lodash';
 
 export default class extends LayerProvider {
 
   constructor(manager) {
     super(manager);
-    this.label = 'Grondwater Levels';
-    this.name = 'GrondwaterLevels';
-    this.type = this.TYPE.GEOMETRY;
-    this.filters = {};
-    this.zoomBounds = [6, 15];
+    this.name = 'Grondsoort';
+    this.type = this.TYPE.TILES;
+    this.zIndex = 10;
+    this.itemGeoJsonLayer = null;
+    this.OndergrondLegend = {
+      Beekdal: {
+        backgroundColor: '#A8FB7E'
+      },
+      Dekzandrug: {
+        backgroundColor: '#ECBD41'
+      },
+      Dekzandvlakte: {
+        backgroundColor: '#FEFE7E'
+      },
+      Restveen: {
+        backgroundColor: '#D0A9F5'
+      },
+      Stuifzand: {
+        backgroundColor: '#EFA077'
+      },
+      Leem: {
+        backgroundColor: '#6587b2'
+      },
+      Ven: {
+        backgroundColor: '#ABFCF9'
+      }
+    };
   }
+
   render() {
     this.visible = true;
-    document.getElementById("waterlevels").style.visibility = "visible";
     this.layer = L.tileLayer.wms('https://eindhoven.nazca4u.nl/Atlas/geoserver/wms', {
-      layers: 'percentie25gw',
+      layers: 'erfgoed_fysischgebied',
       format: 'image/png',
       transparent: true,
-      opacity: 0.45
+      opacity: 0.5
     });
     return this.layer;
   }
@@ -68,7 +91,7 @@ export default class extends LayerProvider {
 
           if (data.features) {
             resolve({
-              label: 'Grondwater Levels',
+              label: 'Sondeeronderzoek',
               source: this.name,
               layer: this.itemGeoJsonLayer,
               data: data.features.map(feature => feature.properties),

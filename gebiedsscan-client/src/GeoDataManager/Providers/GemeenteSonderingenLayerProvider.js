@@ -7,43 +7,77 @@ export default class extends LayerProvider {
 
   constructor(manager) {
     super(manager);
-    this.name = 'Sonderingen';
+    this.name = 'GemeenteSonderingen';
     this.type = this.TYPE.TILES;
     this.zIndex = 10;
-    this.itemGeoJsonLayer = null; 
+    this.itemGeoJsonLayer = null;
     this.legend = {
-      legend: '#523704'
-    };    
+      Gemeentelijk: {
+        width: '0',
+        height: '0',
+        borderLeft: '5px solid transparent',
+        borderRight: '5px solid transparent',
+        borderTop: '10px solid #a87000',
+      },
+    };
   }
 
   render() {
     this.visible = true;
-    this.layer = L.tileLayer.wms('https://geodata.nationaalgeoregister.nl/brocpt/wms', {
-      layers: 'cpt',
-      format: 'image/png',
+    this.layer = L.tileLayer.wms('https://www.dinoloket.nl/arcgis/rest/services/dinoloket/lks_gso_rd/MapServer/export', {
+      layers: 'show%3A0%2C1',
+      f: 'image',
+      dpi: '220',
+      format: 'png32',
       transparent: true
     });
+
     return this.layer;
   }
-  getUnderPoint(point) {
-    var url = this.getFeatureInfoUrl(
-      this.manager.map,
-      this.layer,
-      point,
-      {
-        'info_format': 'application/json'
-      }
-    );
 
-    return new Promise(resolve => {
-      axios.get(`https://kadaster-api.test.semaku.com/cors/get/${encodeURIComponent(url)}`)
+  getUnderPoint(point) {
+    // this.manager.map,
+    // this.layer,
+    // point,
+    const mapBounds = this.manager.map.getBounds()
+    const mapExtent = [
+      mapBounds.getWest(),
+      mapBounds.getSouth(),
+      mapBounds.getEast(),
+      mapBounds.getNorth(),
+    ]
+    const geometry = {
+      x: point[1],
+      y: point[0],
+    }
+    const params = {
+      'f':'json',
+      tolerance: '10',
+      returnGeometry: 'true',
+      returnFieldName: 'false',
+      returnUnformattedValues: 'false',
+      imageDisplay: '2020,698,96',
+      geometry: JSON.stringify(geometry),
+      geometryType: 'esriGeometryPoint',
+      sr: '4326',
+      mapExtent: `${mapExtent[0]},${mapExtent[1]},${mapExtent[2]},${mapExtent[3]}`,
+      layers: 'top:0',
+    }
+
+    return new Promise((resolve, reject) => {
+      axios.get(`https://www.dinoloket.nl/arcgis/rest/services/dinoloket/lks_gso_rd/MapServer/identify`, {
+        params,
+      })
         .then(({data}) => {
-          if (this.itemGeoJsonLayer)
+          if (this.itemGeoJsonLayer) {
             this.itemGeoJsonLayer.remove();
+          }
+
           try {
-            this.itemGeoJsonLayer = L.Proj.geoJson(data, {
-              pointToLayer: (feature, latlng) => {
-                return L.circleMarker(latlng, {
+            if (data.results && data.results[0]) {
+              this.itemGeoJsonLayer = L.circleMarker(
+                L.latLng(data.results[0].geometry.x, data.results[0].geometry.y),
+                {
                   radius: 8,
                   fillColor: "#D62C1F",
                   color: "#000",
@@ -51,14 +85,12 @@ export default class extends LayerProvider {
                   weight: 1,
                   opacity: 1,
                   fillOpacity: 0.9
-                });
-              }
-            });
+              });
+            }
           } catch (error) {
-            console.error(error, data);
-            reject({});
+            reject(error, data);
           }
-          
+
           let style = {
             stroke: false,
             fillColor: '#000000',
@@ -68,22 +100,22 @@ export default class extends LayerProvider {
 
           this.itemGeoJsonLayer.setStyle(style);
 
-          if (data.features) {
+          if (data.results[0].attributes) {
             resolve({
-              label: 'Sonderingen',
+              label: 'Gemeente sonderingen',
               source: this.name,
               layer: this.itemGeoJsonLayer,
-              data: data.features.map(feature => feature.properties),
+              data: [data.results[0].attributes],
             });
           }
           resolve({});
-        });
+        }).catch(reject);
 
     });
   }
 
   getUnderPolygon(polygon) {
-    
+
     let point = turf.flip(turf.centroid(polygon)).geometry.coordinates;
     return this.getUnderPoint(point);
   }

@@ -204,13 +204,9 @@ export default class extends LayerProvider {
 
     axios.get(config.baseUrl + `/gebiedscan/projects`)
     .then((data) => {
-      console.log('data: ', data);
-        this.data.features = this.formatProjects(data.data.results).features;
-        console.log('this.formatProjects(data.data.results): ', this.formatProjects(data.data.results));
-        console.log('this.data.features: ', this.data.features);
-        
-        this.filter();
-        this.manager._restack();
+      this.data.features = this.formatProjects(data.data.results).features;
+      this.filter();
+      this.manager._restack();
     })
     return this.layer;
   }

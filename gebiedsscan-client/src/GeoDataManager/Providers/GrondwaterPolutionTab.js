@@ -1,25 +1,27 @@
 import LayerProvider from "../LayerProvider";
-import turf from 'turf';
 import axios from 'axios';
+import turf from 'turf';
+import _ from 'lodash';
 
 export default class extends LayerProvider {
 
   constructor(manager) {
     super(manager);
-    this.label = 'Grondwater Levels';
-    this.name = 'GrondwaterLevels';
-    this.type = this.TYPE.GEOMETRY;
-    this.filters = {};
-    this.zoomBounds = [6, 15];
+    this.name = 'GrondwaterPolutionTab';
+    this.type = this.TYPE.TILES;
+    this.zIndex = 10;
+    this.itemGeoJsonLayer = null; 
+    this.legend = {
+      legend: '#523704'
+    };    
   }
+
   render() {
     this.visible = true;
-    document.getElementById("waterlevels").style.visibility = "visible";
     this.layer = L.tileLayer.wms('https://eindhoven.nazca4u.nl/Atlas/geoserver/wms', {
-      layers: 'percentie25gw',
+      layers: 'percentie25 ',
       format: 'image/png',
-      transparent: true,
-      opacity: 0.45
+      transparent: true
     });
     return this.layer;
   }
@@ -56,7 +58,7 @@ export default class extends LayerProvider {
             console.error(error, data);
             reject({});
           }
-
+          
           let style = {
             stroke: false,
             fillColor: '#000000',
@@ -68,7 +70,7 @@ export default class extends LayerProvider {
 
           if (data.features) {
             resolve({
-              label: 'Grondwater Levels',
+              label: 'GrondwaterPeilbuizenTab',
               source: this.name,
               layer: this.itemGeoJsonLayer,
               data: data.features.map(feature => feature.properties),
@@ -81,7 +83,7 @@ export default class extends LayerProvider {
   }
 
   getUnderPolygon(polygon) {
-
+    
     let point = turf.flip(turf.centroid(polygon)).geometry.coordinates;
     return this.getUnderPoint(point);
   }

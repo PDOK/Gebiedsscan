@@ -26,11 +26,19 @@ import RceLayerProvider from "./Providers/RceLayerProvider";
 import BekendmakingenLayerProvider from "./Providers/BekendmakingenLayerProvider";
 // import IPDElementsLayerProvider from "./Providers/ElementsLayerProvider";
 import KvkLayerProvider from "./Providers/KvkLayerProvider";
-import SonderingenLayerProvider from "./Providers/SonderingenLayerProvider";
+import GemeenteSonderingenLayerProvider from "./Providers/GemeenteSonderingenLayerProvider";
+import RijksSonderingenLayerProvider from "./Providers/RijksSonderingenLayerProvider";
 import WarmteKoudeopslagLayerProvider from "./Providers/WarmteKoudeopslagLayerProvider";
 import GrondwaterLevelsLayerProvider from "./Providers/GrondwaterLevelsLayerProvider";
 import GrondwaterMeetpuntenLayerProvider from "./Providers/GrondwaterMeetpuntenLayerProvider";
-import GrondwaterPeilbuizenLayerProvider from "./Providers/GrondwaterPeilbuizenLayerProvider";
+import GrondwaterPolutionLayerProvider from "./Providers/GrondwaterPolutionLayerProvider";
+import GrondwaterPolutionSanitationLayerProvider from "./Providers/GrondwaterPolutionSanitationLayerProvider";
+import GrondwaterPolutionCareMeasuresLayerProvider from './Providers/GrondwaterPolutionCareMeasuresLayerProvider';
+import GrondwaterPolutionTab from "./Providers/GrondwaterPolutionTab";
+import SondeeronderzoekLayerProvider from "./Providers/SondeeronderzoekLayerProvider";
+import GrondwaterstandLayerProvider from "./Providers/GrondwaterstandLayerProvider";
+import VerontreinigingLayerProvider from "./Providers/VerontreinigingLayerProvider";
+import BooronderzoekDinoLoketLayerProvider from './Providers/BooronderzoekDinoLoketLayerProvider'
 
 export default class {
   constructor(map) {
@@ -66,11 +74,19 @@ export default class {
     MarienhageLayerProvider,
     RceLayerProvider,
     BekendmakingenLayerProvider,
-    SonderingenLayerProvider,
+    GemeenteSonderingenLayerProvider,
+    RijksSonderingenLayerProvider,
     WarmteKoudeopslagLayerProvider,
     GrondwaterLevelsLayerProvider,
     GrondwaterMeetpuntenLayerProvider,
-    GrondwaterPeilbuizenLayerProvider,
+    GrondwaterPolutionLayerProvider,
+    GrondwaterPolutionCareMeasuresLayerProvider,
+    GrondwaterPolutionSanitationLayerProvider,
+    GrondwaterPolutionTab,
+    SondeeronderzoekLayerProvider,
+    GrondwaterstandLayerProvider,
+    VerontreinigingLayerProvider,
+    BooronderzoekDinoLoketLayerProvider,
   ];
 
   if (!this.mapLess) {
@@ -453,8 +469,6 @@ export default class {
     drawMarker: false, // adds button to toggle edit mode for all layers
     removalMode: true, // adds a button to remove layers
   };
-
-  console.log(this.map.pm);
 
   let geoJsonLayer = L.geoJson(null, { pmIgnore: false });
   geoJsonLayer.addTo(this.map);

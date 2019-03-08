@@ -76,7 +76,7 @@
       }
     },
     mounted() {
-      // console.log('bus', this.bus);
+      // 
       this.bus.$on('gemeenteChanged', (gemeente) => {
         this.gemeente = gemeente;
       });

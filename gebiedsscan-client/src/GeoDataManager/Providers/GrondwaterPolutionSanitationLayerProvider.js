@@ -6,39 +6,36 @@ export default class extends LayerProvider {
 
   constructor(manager) {
     super(manager);
-    this.label = 'WarmteKoudeopslag';
-    this.name = 'WarmteKoudeopslag';
-
+    this.label = 'Grondwater Saneringscontouren';
+    this.name = 'GrondwaterPolutionSanitation';
     this.type = this.TYPE.GEOMETRY;
-    this.legend = {
-      legend: '#d5463d'
-    };
     this.filters = {};
-
     this.zoomBounds = [6, 15];
-
+    this.legend = {
+      'Saneringen': {
+        'backgroundColor': '#fcef84',
+        'border': '2px solid #e4b200'
+      }
+    };
   }
   render() {
-    const geoJSONPolygons = require("../../assets/data/kwo_eindhoven_epsg4326.json");
+    const geoJSONPolygons = require("../../assets/data/saneringscontour_eindhoven_epsg4326.json");
 
     this.layer = new L.GeoJSON(geoJSONPolygons, {
       pointToLayer(feature, latlng) {
         return L.circleMarker(latlng, {
-          radius: 8,
-          fillColor: "#D62C1F",
-          color: "#000",
-          dashArray: '3',
-          weight: 1,
+          radius: 4,
+          fillColor: "#E4B200",
+          weight: 0,
           opacity: 1,
-          fillOpacity: 0.9
+          fillOpacity: 0.6
         });
       },
       style(feature) {
         return {
-          stroke: false,
-          fillColor: '#D62C1F',
-          fill: true,
-          fillOpacity: 0.6
+          color: "#E4B200",
+          weight: 2,
+          opacity: 1,
         }
       },
     });

@@ -72,7 +72,7 @@
                         layer="Bomen">
                     Bomen
                   </LayerToggle>
-                  
+
                 </div>
               </div>
             </li>
@@ -87,8 +87,8 @@
                   <LayerToggle :params="params" :manager="manager" layer="Sonderingen">
                     Sonderingen
                   </LayerToggle>
-                  <LayerToggle :params="params" :manager="manager" layer="GrondwaterPeilbuizen">
-                    Grondwater peilbuizen
+                  <LayerToggle :params="params" :manager="manager" layer="GrondwaterPolution">
+                    Grondwater polution
                   </LayerToggle>
                   <LayerToggle :params="params" :manager="manager" layer="GrondwaterLevels">
                    Grondwater levels
@@ -138,7 +138,7 @@
                       <RangeFilter :params="params" :manager="manager"
                             property="rijksbouwjaar">
                         Bouwjaar
-                      </RangeFilter>  
+                      </RangeFilter>
                     </div>
 
                     <div class="">

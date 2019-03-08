@@ -1,25 +1,40 @@
 import LayerProvider from "../LayerProvider";
-import turf from 'turf';
 import axios from 'axios';
+import turf from 'turf';
+import _ from 'lodash';
 
 export default class extends LayerProvider {
 
   constructor(manager) {
     super(manager);
-    this.label = 'Grondwater Levels';
-    this.name = 'GrondwaterLevels';
-    this.type = this.TYPE.GEOMETRY;
-    this.filters = {};
-    this.zoomBounds = [6, 15];
+    this.name = 'Verontreiniging';
+    this.type = this.TYPE.TILES;
+    this.zIndex = 10;
+    this.itemGeoJsonLayer = null; 
+    this.OndergrondLegend = {
+      Grondverontreiniging: {
+        backgroundColor: '#A8FB7E'
+      },
+      Waterverontreiniging: {
+        backgroundColor: '#ECBD41'
+      },
+      'Grond-en waterverontreiniging': {
+        backgroundColor: '#FEFE7E'
+      }
+    };     
   }
+
   render() {
+    // saneringscontour_eindhoven_epsg4326.geojson
+    // verontreiningingscontour_eindhoven_epsg4326.geojson
+    // zorgmaatregel_eindhoven_epsg4326.geojson
+
     this.visible = true;
-    document.getElementById("waterlevels").style.visibility = "visible";
     this.layer = L.tileLayer.wms('https://eindhoven.nazca4u.nl/Atlas/geoserver/wms', {
-      layers: 'percentie25gw',
+      layers: 'eindhoven_verontreiniging,zorgcontouren,eindhoven_sanering',
       format: 'image/png',
       transparent: true,
-      opacity: 0.45
+      opacity: 0.5
     });
     return this.layer;
   }
@@ -56,7 +71,7 @@ export default class extends LayerProvider {
             console.error(error, data);
             reject({});
           }
-
+          
           let style = {
             stroke: false,
             fillColor: '#000000',
@@ -68,7 +83,7 @@ export default class extends LayerProvider {
 
           if (data.features) {
             resolve({
-              label: 'Grondwater Levels',
+              label: 'Verontreiniging',
               source: this.name,
               layer: this.itemGeoJsonLayer,
               data: data.features.map(feature => feature.properties),
@@ -81,7 +96,7 @@ export default class extends LayerProvider {
   }
 
   getUnderPolygon(polygon) {
-
+    
     let point = turf.flip(turf.centroid(polygon)).geometry.coordinates;
     return this.getUnderPoint(point);
   }

@@ -32,12 +32,16 @@ import MijnPlan from './components/MijnPlan.vue';
 import Overzicht from './components/element-info-modal-tabs/Overzicht.vue';
 import Visie from './components/element-info-modal-tabs/Visie.vue';
 import Toetsingskaders from './components/element-info-modal-tabs/Toetsingskaders.vue';
+import Ondergrond from './components/element-info-modal-tabs/Ondergrond';
 import Vergunningen from './components/element-info-modal-tabs/Vergunningen.vue';
 import Omgevingsinformatie from './components/element-info-modal-tabs/Omgevingsinformatie.vue';
 import Nieuws from './components/element-info-modal-tabs/Nieuws.vue';
 import Deelnemers from './components/element-info-modal-tabs/Deelnemers.vue';
 import Contact from './components/element-info-modal-tabs/Contact.vue';
 import VObject from './components/element-info-modal-tabs/subcomponents/VObject';
+import LayerDropdown from './components/filters/LayerDropdown.vue';
+import OndergrondLegend from './components/filters/OndergrondLegend.vue';
+import DropdownFilter from './components/filters/DropdownFilter.vue';
 
 Vue.use(VueRouter);
 Vue.use(VueLocalStorage)
@@ -54,7 +58,8 @@ const router = new VueRouter({
   mode: 'history',
   routes
 });
-
+Vue.component('DropdownFilter', DropdownFilter);
+Vue.component('LayerDropdown', LayerDropdown);
 Vue.component('SearchWindow', SearchWindow);
 Vue.component('BaseMap', BaseMap);
 Vue.component('FilterSidebar', FilterSidebar);
@@ -71,11 +76,13 @@ Vue.component('PreviewBox', PreviewBox);
 Vue.component('ObjectInfoModal', ObjectInfoModal);
 Vue.component('ElementInfoModal', ElementInfoModal);
 Vue.component('MijnPlan', MijnPlan);
+Vue.component('OndergrondLegend', OndergrondLegend);
 
 //modalTabs
 Vue.component('Overzicht', Overzicht);
 Vue.component('Visie', Visie);
 Vue.component('Toetsingskaders', Toetsingskaders);
+Vue.component('Ondergrond', Ondergrond);
 Vue.component('Vergunningen', Vergunningen);
 Vue.component('Omgevingsinformatie', Omgevingsinformatie);
 Vue.component('VObject', VObject);

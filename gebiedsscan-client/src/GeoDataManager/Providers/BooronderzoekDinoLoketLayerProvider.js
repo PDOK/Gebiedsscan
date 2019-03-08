@@ -6,31 +6,29 @@ export default class extends LayerProvider {
 
   constructor(manager) {
     super(manager);
-    this.label = 'Meetpunten';
-    this.name = 'meetpunten';
+    this.label = 'Booronderzoek';
+    this.name = 'BooronderzoekDinoLoket';
     this.type = this.TYPE.GEOMETRY;
     this.filters = {};
     this.zoomBounds = [6, 15];
     this.legend = {
-      Watermeetpunten: {
-        width: '0',
-        height: '0',
-        borderLeft: '5px solid transparent',
-        borderRight: '5px solid transparent',
-        borderBottom: '10px solid #4673aa',
-      },
-
-    }
+      'Booronder': {
+        'border-radius' : '50%',
+        'backgroundColor': '#da7506',
+        'border': '2px solid black'
+      }
+    };
   }
   render() {
     this.visible = true;
-    this.layer = L.tileLayer.wms('https://www.dinoloket.nl/arcgis/rest/services/dinoloket/lks_gwo_rd/MapServer/export', {
+    this.layer = L.tileLayer.wms('https://www.dinoloket.nl/arcgis/rest/services/dinoloket/lks_gbo_rd/MapServer/export', {
       layers: 'show%3A0%2C1',
       f: 'image',
       dpi: '220',
       format: 'png32',
       transparent: true
     });
+
     return this.layer;
   }
 
@@ -64,7 +62,7 @@ export default class extends LayerProvider {
     }
 
     return new Promise((resolve, reject) => {
-      axios.get(`https://www.dinoloket.nl/arcgis/rest/services/dinoloket/lks_gwo_rd/MapServer/identify`, {
+      axios.get(`https://www.dinoloket.nl/arcgis/rest/services/dinoloket/lks_gbo_rd/MapServer/identify`, {
         params,
       })
         .then(({data}) => {
@@ -77,7 +75,7 @@ export default class extends LayerProvider {
               this.itemGeoJsonLayer = L.circleMarker(
                 L.latLng(data.results[0].geometry.x, data.results[0].geometry.y),
                 {
-                  radius: 8,
+                  radius: 20,
                   fillColor: "#D62C1F",
                   color: "#000",
                   dashArray: '3',
@@ -85,6 +83,7 @@ export default class extends LayerProvider {
                   opacity: 1,
                   fillOpacity: 0.9
               });
+
               let style = {
                 stroke: false,
                 fillColor: '#000000',
@@ -94,16 +93,26 @@ export default class extends LayerProvider {
               this.itemGeoJsonLayer.setStyle(style);
 
               if (data.results[0].attributes) {
-                resolve({
-                  label: 'Grondwater meetpunt',
-                  source: this.name,
-                  layer: this.itemGeoJsonLayer,
-                  data: [data.results[0].attributes],
-                });
+                const identityData = data
+                const profileUrl = `https://www.dinoloket.nl/javascriptmapviewer-web/rest/brh/profile`
+                axios.post(`https://kadaster-api.test.semaku.com/cors/post/${encodeURIComponent(profileUrl)}`, {
+                  "dinoId": data.results[0].attributes.DINO_NR,
+                  "depthReference":"MV",
+                  "language":"nl",
+                }).then((response) => {
+                  resolve({
+                    label: 'Booronderzoek',
+                    source: this.name,
+                    layer: this.itemGeoJsonLayer,
+                    data: [{
+                      ...identityData.results[0].attributes,
+                      boringProfile: response.data.columns[0].profileMetadata.map(level => {
+                        return `${level.layerInfos[0].value}: ${level.layerInfos[1].value}`
+                      }),
+                    }],
+                  });
+                })
               }
-              resolve({});
-            } else {
-              resolve({});
             }
           } catch (error) {
             reject(error, data);

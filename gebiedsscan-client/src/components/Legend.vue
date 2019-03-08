@@ -2,7 +2,7 @@
   <div v-if="legendaItems.length" @mouseleave="legendShown = false" class="legend-box">
     <i uk-icon="icon: info; ratio: 0.7" @mouseover="legendShown = true"></i>
     <div v-show="legendShown" class="inner">
-      <!-- <strong>Legenda</strong> -->
+      <!-- <strong>Legenda (in m)</strong> -->
       <div v-for="item in legendaItems" :key="item.id" class="item">
         <span class="icon" :style="item.style"></span>
         <span class="name">{{item.name}}</span>
@@ -17,7 +17,7 @@
 
     i {
       // float: right;
-      
+
     }
 
     .inner {
